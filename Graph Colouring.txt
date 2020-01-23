@@ -1,0 +1,78 @@
+// int counter=0;
+
+void print(int**visited,int n,int m){
+    for (int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<visited[i][j]<<' ';
+        }
+        cout<<endl;
+    }
+}
+
+bool isSafe(char board[][MAXN], char word, int **visited, int x, int y , int N, int M ,int startx,int starty,int counter){
+
+if(x>= 0 && y>=0 && x<N && y <M && visited[x][y] ==0 && board[x][y] == word) 
+	return true;
+
+return false;
+
+}
+
+
+bool solver(char board[][MAXN], char word, int **visited, int x , int y, int N, int M,int startx,int starty,int counter){
+
+    if(counter>4 && x==startx && y==starty) {
+        // print(visited,N,M);
+        return true;
+    }
+
+        int a[]={0,-1,1,0}; 
+        int b[]={1,0,0,-1};
+
+if (isSafe(board,word,visited,x,y,N,M,startx,starty,counter)){
+    
+    visited[x][y]=counter++;
+    
+    for(int k=0;k<4;k++){
+        if(solver(board,word,visited,x+a[k],y+b[k],N,M,startx,starty,counter)){
+            return true;
+        }
+    }
+            visited[x][y]=0;
+    // return false;
+
+}
+    // counter=0;
+    return false;
+}
+
+
+
+
+
+int solve(char board[][MAXN],int n, int m)
+{
+	// Write your code here.
+int **visited= new int*[n];
+    for(int i =0; i<n; i++){
+        visited[i] =new int[m];
+        for(int j=0 ; j<m; j++){
+            visited[i][j] =0;
+        }
+        
+    }
+    
+    for(int i =0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(board[i][j]== board[i+1][j] && board[i][j]== board[i][j+1]) {
+            int startx=i;
+            int starty=j;
+               if (solver(board, board[i][j], visited, i, j, n, m,startx,starty,0))
+                   return 1;
+            }
+            }
+        }
+    
+    
+    return 0;
+}
